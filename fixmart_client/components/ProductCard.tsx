@@ -10,6 +10,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, updateSignedInUser }: ProductCardProps ) => {
+  
   return (
     <Link
       href={`/products/${product._id}`}

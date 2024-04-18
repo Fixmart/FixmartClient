@@ -1,21 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import HeartFavorite from "./HeartFavorite";
 import { MinusCircle, PlusCircle } from "lucide-react";
-
+import Link from "next/link";
 import useCart from "@/lib/hooks/useCart";
 
 const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
-  const [selectedColor, setSelectedColor] = useState<string>(
-    productInfo.colors[0]
-  );
-  const [selectedSize, setSelectedSize] = useState<string>(
-    productInfo.sizes[0]
-  );
+  
+ 
+  const [relatedProducts, setRelatedProducts] = useState<ProductType[]>([]); 
   const [quantity, setQuantity] = useState<number>(1);
 
   const cart = useCart();
+
+  const getProductsByHSNCode = async (hsnCode: string, currentProductId: string) => {
+    try {
+      const products = await fetch(`your_api_endpoint_here?hsnCode=${hsnCode}&excludeId=${currentProductId}`);
+      const data = await products.json();
+      return data.products; 
+    } catch (error) {
+      console.error('Error fetching related products:', error);
+      return [];
+    }
+  };
+   // Fetch related products by HSN code
+   useEffect(() => {
+    const fetchRelatedProducts = async () => {
+      try {
+        const products = await getProductsByHSNCode(productInfo.hsn_code, productInfo._id);
+        setRelatedProducts(products);
+      } catch (error) {
+        console.error('Error fetching related products:', error);
+      }
+    };
+
+    fetchRelatedProducts();
+  }, [productInfo]); // Run effect when productInfo changes
+
 
   return (
     <div className="max-w-[400px] flex flex-col gap-4">
@@ -36,43 +58,17 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
         <p className="text-small-medium">{productInfo.description}</p>
       </div>
 
-      {productInfo.colors.length > 0 && (
+    
         <div className="flex flex-col gap-2">
-          <p className="text-base-medium text-grey-2">Colors:</p>
-          <div className="flex gap-2">
-            {productInfo.colors.map((color, index) => (
-              <p
-                key={index}
-                className={`border border-black px-2 py-1 rounded-lg cursor-pointer ${
-                  selectedColor === color && "bg-black text-white"
-                }`}
-                onClick={() => setSelectedColor(color)}
-              >
-                {color}
-              </p>
-            ))}
-          </div>
+          <p className="text-base-medium text-grey-2">Color:</p>
+          <p className="text-small-medium">{productInfo.color}</p>
         </div>
-      )}
-
-      {productInfo.sizes.length > 0 && (
-        <div className="flex flex-col gap-2">
+  
+       <div className="flex flex-col gap-2">
           <p className="text-base-medium text-grey-2">Sizes:</p>
-          <div className="flex gap-2">
-            {productInfo.sizes.map((size, index) => (
-              <p
-                key={index}
-                className={`border border-black px-2 py-1 rounded-lg cursor-pointer ${
-                  selectedSize === size && "bg-black text-white"
-                }`}
-                onClick={() => setSelectedSize(size)}
-              >
-                {size}
-              </p>
-            ))}
-          </div>
+          <p className="text-small-medium">{productInfo.size}</p>
         </div>
-      )}
+    
 
       <div className="flex flex-col gap-2">
         <p className="text-base-medium text-grey-2">Quantity:</p>
@@ -94,15 +90,34 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
         onClick={() => {
           cart.addItem({
             item: productInfo,
-            quantity,
-            color: selectedColor,
-            size: selectedSize,
+            quantity
+           
           });
         }}
       >
         Add To Cart
       </button>
+
+
+      <div className="text-bold">
+         <h6>Sizes available are: </h6>
+          <ul>
+            {relatedProducts.map((product: ProductType) => (
+               <Link
+               href={`/products/${product._id}`}
+               className="w-[220px] flex flex-col gap-2"
+               key={product._id}
+             >
+              <li>
+                <p>{product.size}</p>
+               
+              </li>
+              </Link>
+            ))}
+          </ul>
+      </div>
     </div>
+
   );
 };
 

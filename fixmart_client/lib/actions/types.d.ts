@@ -7,16 +7,18 @@ type CollectionType = {
   
   type ProductType = {
     _id: string;
+    item_code: string;
+    hsn_code: string;
     title: string;
     description: string;
     media: [string];
     category: string;
     collections: [string];
     tags: [string];
+    color: string;
     price: number;
     cost: number;
-    sizes: [string];
-    colors: [string];
+    size: string;
     createdAt: string;
     updatedAt: string;
   };
