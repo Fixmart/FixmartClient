@@ -28,7 +28,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
    useEffect(() => {
     const fetchRelatedProducts = async () => {
       try {
-        const products = await getProductsByHSNCode(productInfo.hsn_code, productInfo._id);
+        const products = await getProductsByHSNCode(productInfo.HSNCode, productInfo._id);
         setRelatedProducts(products);
       } catch (error) {
         console.error('Error fetching related products:', error);

@@ -7,8 +7,8 @@ type CollectionType = {
   
   type ProductType = {
     _id: string;
-    item_code: string;
-    hsn_code: string;
+    ItemCode: string;
+    HSNCode: string;
     title: string;
     description: string;
     media: [string];
@@ -21,6 +21,9 @@ type CollectionType = {
     size: string;
     createdAt: string;
     updatedAt: string;
+    Quantity: number;
+    QuantitySold: number;
+    PurchasedBy:Object;
   };
   
   type UserType = {
