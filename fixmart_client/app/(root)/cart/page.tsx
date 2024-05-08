@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import { MinusCircle,  PlusCircle,  Trash } from 'lucide-react';
 import useCart from '@/lib/hooks/useCart';
