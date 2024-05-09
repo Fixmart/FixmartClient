@@ -37,7 +37,7 @@ const Cart = () => {
                     alt="product"
                   />
 
-                  <div className="flex flex gap-3 ml-4">
+                  <div className="flex gap-3 ml-4">
                     <p className="text-body-bold">{cartItem.item.title}</p>
                     {cartItem.color && (
                       <p className="text-small-medium">{cartItem.color}</p>
@@ -85,7 +85,7 @@ const Cart = () => {
         </p>
         <div className="flex justify-between text-body-semibold">
           <span>Total Amount </span>
-          <span>${totalRounded}</span>
+          <span>₹{totalRounded}</span>
         </div>
         <button className="border rounded-lg text-bold bg-white py-3 w-full hover:bg-black hover:text-white">
           Proceed to Checkout
