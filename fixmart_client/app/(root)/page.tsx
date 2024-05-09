@@ -5,7 +5,7 @@ import { Playfair_Display } from 'next/font/google';
 
 const playfair_display = Playfair_Display({
   subsets: ['cyrillic'],
-  weight: "600"
+  weight: "700"
 });
 
 export default function Home() {
