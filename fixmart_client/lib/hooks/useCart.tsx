@@ -53,14 +53,24 @@ const useCart = create(
         toast.success("Item quantity increased");
       },
       decreaseQuantity: (idToDecrease: String) => {
-        const newCartItems = get().cartItems.map((cartItem) =>
-          cartItem.item._id === idToDecrease
-            ? { ...cartItem, quantity: cartItem.quantity - 1 }
-            : cartItem
-        );
+        const newCartItems = get().cartItems.map((cartItem) => {
+            if (cartItem.item._id === idToDecrease) {
+                const newQuantity = cartItem.quantity - 1;
+                if (newQuantity <= 0) {
+                    // If quantity becomes 0 or negative, remove the item from the cart
+                    return null;
+                } else {
+                    return { ...cartItem, quantity: newQuantity };
+                }
+            } else {
+                return cartItem;
+            }
+        }).filter((item): item is CartItem => item !== null); // Filter out null values
+    
         set({ cartItems: newCartItems });
         toast.success("Item quantity decreased");
-      },
+    },
+    
       clearCart: () => set({ cartItems: [] }),
     }),
     {
