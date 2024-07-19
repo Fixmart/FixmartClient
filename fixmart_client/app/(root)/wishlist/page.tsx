@@ -37,14 +37,13 @@ const Wishlist = () => {
       setLoading(false);
       return;
     }
-  
+    
     try {
       const wishlistProducts = await Promise.all(
         signedInUser.wishlist.map(async (productId) => {
           try {
             const res = await getProductDetails(productId);
             if (!res || res.message === "Product not found") {
-              // If product details are not found or the product has a "Product not found" message, skip this product
               return null;
             }
             return res;
@@ -58,6 +57,7 @@ const Wishlist = () => {
   
       // Filter out the null values (skipped products)
       const filteredWishlistProducts = wishlistProducts.filter(product => product !== null);
+      console.log(filteredWishlistProducts)
   
       setWishlist(filteredWishlistProducts);
     } catch (error) {
