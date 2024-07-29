@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "../globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+
+import "../globals.css";
 import Navbar from "@/components/Navbar";
 import ToasterProvider from "@/lib/providers/ToasterProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Fixmart store",
-  description: "A store for all things",
+  title: "Fixmart Store",
+  description: "Fixmart Ecommerce Store",
 };
 
 export default function RootLayout({
@@ -22,8 +23,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <ClerkProvider>
           <ToasterProvider />
-          <Navbar/>
-          {children}</ClerkProvider></body>
+          <Navbar />
+          {children}
+        </ClerkProvider>
+      </body>
     </html>
   );
 }

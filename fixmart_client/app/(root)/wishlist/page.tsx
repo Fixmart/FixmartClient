@@ -31,42 +31,18 @@ const Wishlist = () => {
   }, [user])
 
   const getWishlistProducts = async () => {
-    setLoading(true);
-  
-    if (!signedInUser) {
-      setLoading(false);
-      return;
-    }
-    
-    try {
-      const wishlistProducts = await Promise.all(
-        signedInUser.wishlist.map(async (productId) => {
-          try {
-            const res = await getProductDetails(productId);
-            if (!res || res.message === "Product not found") {
-              return null;
-            }
-            return res;
-          } catch (error) {
-            // Handle the error (e.g., log it) and skip this product
-            console.error(`Error fetching product details for product ID: ${productId}`, error);
-            return null;
-          }
-        })
-      );
-  
-      // Filter out the null values (skipped products)
-      const filteredWishlistProducts = wishlistProducts.filter(product => product !== null);
-      console.log(filteredWishlistProducts)
-  
-      setWishlist(filteredWishlistProducts);
-    } catch (error) {
-      console.error('Error processing wishlist products:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  
+    setLoading(true)
+
+    if (!signedInUser) return
+
+    const wishlistProducts = await Promise.all(signedInUser.wishlist.map(async (productId) => {
+      const res = await getProductDetails(productId)
+      return res
+    }))
+
+    setWishlist(wishlistProducts)
+    setLoading(false)
+  }
 
   useEffect(() => {
     if (signedInUser) {
